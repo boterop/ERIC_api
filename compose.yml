@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgres/data
+  graph_theory:
+    build:
+      context: .
+      target: builder
+      args:
+        MIX_ENV: dev
+    network_mode: host
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      - PORT=4000
+    depends_on:
+      - db
+volumes:
+  deps:
+  build:
+  db:
