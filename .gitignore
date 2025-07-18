@@ -23,7 +23,7 @@ erl_crash.dump
 /tmp/
 
 # Ignore package tarball (built via "mix hex.build").
-elixir_template-*.tar
+eric_api-*.tar
 
 .env*
 !.env*.example

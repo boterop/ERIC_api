@@ -1,12 +1,12 @@
-defmodule ElixirTemplateWeb do
+defmodule EricApiWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use ElixirTemplateWeb, :controller
-      use ElixirTemplateWeb, :html
+      use EricApiWeb, :controller
+      use EricApiWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -43,9 +43,9 @@ defmodule ElixirTemplateWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: ElixirTemplateWeb.Layouts]
+        layouts: [html: EricApiWeb.Layouts]
 
-      use Gettext, backend: ElixirTemplateWeb.Gettext
+      use Gettext, backend: EricApiWeb.Gettext
 
       import Plug.Conn
 
@@ -57,9 +57,9 @@ defmodule ElixirTemplateWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: ElixirTemplateWeb.Endpoint,
-        router: ElixirTemplateWeb.Router,
-        statics: ElixirTemplateWeb.static_paths()
+        endpoint: EricApiWeb.Endpoint,
+        router: EricApiWeb.Router,
+        statics: EricApiWeb.static_paths()
     end
   end
 

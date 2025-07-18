@@ -5,23 +5,23 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :elixir_template, ElixirTemplate.Repo,
+config :eric_api, EricApi.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "elixir_template_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "eric_api_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :elixir_template, ElixirTemplateWeb.Endpoint,
+config :eric_api, EricApiWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "SLXQszRpXZ9RLsdAjWTZJK/SBIJX8FVz0CpiJ3OajCLbLmW15uuf3QlEzGbXysMZ",
   server: false
 
 # In test we don't send emails
-config :elixir_template, ElixirTemplate.Mailer, adapter: Swoosh.Adapters.Test
+config :eric_api, EricApi.Mailer, adapter: Swoosh.Adapters.Test
 
 # Disable swoosh api client as it is only required for production adapters
 config :swoosh, :api_client, false

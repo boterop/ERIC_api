@@ -1,17 +1,17 @@
-defmodule ElixirTemplate.MixProject do
+defmodule EricApi.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :elixir_template,
+      app: :eric_api,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
       dialyzer: [
-        plt_add_apps: [:elixir_template, :ex_unit, :jason],
+        plt_add_apps: [:eric_api, :ex_unit, :jason],
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
       ],
       test_coverage: [tool: ExCoveralls],
@@ -29,7 +29,7 @@ defmodule ElixirTemplate.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {ElixirTemplate.Application, []},
+      mod: {EricApi.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
