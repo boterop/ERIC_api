@@ -1,6 +1,6 @@
-defmodule ElixirTemplate do
+defmodule EricApi do
   @moduledoc """
-  ElixirTemplate keeps the contexts that define your domain
+  EricApi keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

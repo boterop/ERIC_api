@@ -1,4 +1,4 @@
-defmodule ElixirTemplate.Application do
+defmodule EricApi.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,21 +8,21 @@ defmodule ElixirTemplate.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      ElixirTemplateWeb.Telemetry,
-      ElixirTemplate.Repo,
-      {DNSCluster, query: Application.get_env(:elixir_template, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: ElixirTemplate.PubSub},
+      EricApiWeb.Telemetry,
+      EricApi.Repo,
+      {DNSCluster, query: Application.get_env(:eric_api, :dns_cluster_query) || :ignore},
+      {Phoenix.PubSub, name: EricApi.PubSub},
       # Start the Finch HTTP client for sending emails
-      {Finch, name: ElixirTemplate.Finch},
-      # Start a worker by calling: ElixirTemplate.Worker.start_link(arg)
-      # {ElixirTemplate.Worker, arg},
+      {Finch, name: EricApi.Finch},
+      # Start a worker by calling: EricApi.Worker.start_link(arg)
+      # {EricApi.Worker, arg},
       # Start to serve requests, typically the last entry
-      ElixirTemplateWeb.Endpoint
+      EricApiWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: ElixirTemplate.Supervisor]
+    opts = [strategy: :one_for_one, name: EricApi.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -30,7 +30,7 @@ defmodule ElixirTemplate.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    ElixirTemplateWeb.Endpoint.config_change(changed, removed)
+    EricApiWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end
