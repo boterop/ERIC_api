@@ -22,8 +22,7 @@ defmodule EricApi.DataCase do
       alias EricApi.Repo
 
       import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
+      import Ecto.{Changeset, Query}
       import EricApi.DataCase
     end
   end

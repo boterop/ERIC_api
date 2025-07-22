@@ -7,6 +7,10 @@
 # General application configuration
 import Config
 
+config :eric_api, EricApi.Adapters.Guardian,
+  issuer: "eric_api",
+  secret_key: System.get_env("GUARDIAN_KEY", "guardian_key")
+
 config :eric_api,
   ecto_repos: [EricApi.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
