@@ -42,7 +42,7 @@ defmodule EricApiWeb.UserControllerTest do
                "name" => "some name"
              } = user_data
 
-      assert Bcrypt.verify_pass("some password", user_data["password"])
+      assert user_data["password"] == nil
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -67,7 +67,7 @@ defmodule EricApiWeb.UserControllerTest do
                "name" => "some updated name"
              } = user_data
 
-      assert Bcrypt.verify_pass("some updated password", user_data["password"])
+      assert user_data["password"] == nil
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
@@ -86,6 +86,21 @@ defmodule EricApiWeb.UserControllerTest do
       assert_error_sent 404, fn ->
         get(conn, ~p"/api/users/#{user}")
       end
+    end
+  end
+
+  describe "login user" do
+    setup [:create_user]
+
+    test "logs the user in", %{conn: conn, user: user} do
+      conn = post(conn, ~p"/api/login", user: %{email: user.email, password: "some password"})
+      token = json_response(conn, 200)["data"]
+      assert is_binary(token)
+    end
+
+    test "logs the user in with invalid credentials", %{conn: conn, user: user} do
+      conn = post(conn, ~p"/api/login", user: %{email: user.email, password: "invalid password"})
+      assert json_response(conn, 401)["error"] == "invalid_credentials"
     end
   end
 

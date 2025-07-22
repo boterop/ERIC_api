@@ -49,6 +49,27 @@ defmodule EricApi.Adapters.Users do
   end
 
   @doc """
+  Gets a single user.
+
+  Raises `Ecto.NoResultsError` if the User does not exist.
+
+  ## Examples
+
+      iex> get_by(email: "foo@example.com")
+      %User{}
+
+      iex> get_by(email: "unknown@example.com")
+      nil
+
+  """
+  @impl true
+  def get_by(attrs) do
+    EctoUser
+    |> Repo.get_by(attrs)
+    |> cast()
+  end
+
+  @doc """
   Creates a user.
 
   ## Examples

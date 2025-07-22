@@ -5,10 +5,20 @@ defmodule EricApiWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", EricApiWeb do
-    pipe_through :api
+  pipeline :auth do
+    if Mix.env() !== :test, do: plug(EricApiWeb.Auth.Pipeline)
+  end
 
-    resources "/users", UserController
+  scope "/api/login", EricApiWeb do
+    pipe_through [:api]
+
+    post "/", UserController, :login
+  end
+
+  scope "/api/users", EricApiWeb do
+    pipe_through [:api, :auth]
+
+    resources "/", UserController
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

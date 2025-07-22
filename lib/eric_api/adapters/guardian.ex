@@ -1,0 +1,41 @@
+defmodule EricApi.Adapters.Guardian do
+  @moduledoc """
+  The Guardian adapter.
+  """
+
+  use Guardian, otp_app: :eric_api
+  alias EricApi.Adapters.Users
+
+  @spec subject_for_token(map(), map()) :: {:ok, String.t()} | {:error, atom()}
+  def subject_for_token(%{id: id}, _claims) do
+    sub = to_string(id)
+    {:ok, sub}
+  end
+
+  def subject_for_token(_user, _claims), do: {:error, :no_id_provided}
+
+  @spec resource_from_claims(map()) :: {:ok, String.t()} | {:error, atom()}
+  def resource_from_claims(%{"sub" => id}) do
+    case Users.get_user!(id) do
+      %{} = user -> create_token(user)
+      _err -> {:error, :no_user_found}
+    end
+  end
+
+  def resource_from_claims(_claims), do: {:error, :no_id_provided}
+
+  @spec login(String.t(), String.t()) :: {:ok, String.t()} | {:error, :invalid_credentials}
+  def login(email, password) do
+    with %{password: hash} = user <- Users.get_by(email: email),
+         true <- Bcrypt.verify_pass(password, hash) do
+      create_token(user)
+    else
+      _errors -> {:error, :invalid_credentials}
+    end
+  end
+
+  defp create_token(%{} = user) do
+    {:ok, token, _claims} = encode_and_sign(user)
+    {:ok, token}
+  end
+end

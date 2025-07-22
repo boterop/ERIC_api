@@ -2,7 +2,7 @@ defmodule EricApiWeb.UserController do
   use EricApiWeb, :controller
 
   alias EricApi.Domain.User
-  alias EricApi.Services.Accounts
+  alias EricApi.Services.{Accounts, Guardian}
 
   action_fallback EricApiWeb.FallbackController
 
@@ -43,6 +43,13 @@ defmodule EricApiWeb.UserController do
 
     with {:ok, %User{}} <- Accounts.delete_user(user) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  @spec login(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def login(conn, %{"user" => %{"email" => email, "password" => password}}) do
+    with {:ok, token} <- Guardian.authenticate(email, password) do
+      render(conn, :show_token, token: token)
     end
   end
 end

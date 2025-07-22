@@ -22,4 +22,10 @@ defmodule EricApiWeb.FallbackController do
     |> put_view(html: EricApiWeb.ErrorHTML, json: EricApiWeb.ErrorJSON)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :invalid_credentials}) do
+    conn
+    |> put_status(:unauthorized)
+    |> json(%{error: "invalid_credentials"})
+  end
 end

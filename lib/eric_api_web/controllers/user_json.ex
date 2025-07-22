@@ -17,13 +17,17 @@ defmodule EricApiWeb.UserJSON do
     %{data: data(user)}
   end
 
+  @spec show_token(map()) :: map()
+  def show_token(%{token: token}) do
+    %{data: token}
+  end
+
   @spec data(User.t()) :: map()
   defp data(%User{} = user) do
     %{
       id: user.id,
       name: user.name,
-      email: user.email,
-      password: user.password
+      email: user.email
     }
   end
 end
