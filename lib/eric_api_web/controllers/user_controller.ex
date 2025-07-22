@@ -1,8 +1,8 @@
 defmodule EricApiWeb.UserController do
   use EricApiWeb, :controller
 
-  alias EricApi.Adapters.Accounts
   alias EricApi.Domain.User
+  alias EricApi.Services.Accounts
 
   action_fallback EricApiWeb.FallbackController
 

@@ -1,33 +1,12 @@
 defmodule EricApi.Domain.User do
-  @moduledoc """
-  The User domain.
-  """
+  @moduledoc false
 
-  use Ecto.Schema
-  import Ecto.Changeset
+  @type t :: %__MODULE__{
+          id: String.t() | nil,
+          name: String.t(),
+          email: String.t(),
+          password: String.t()
+        }
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-  schema "users" do
-    field :name, :string
-    field :password, :string
-    field :email, :string
-
-    timestamps(type: :utc_datetime)
-  end
-
-  @doc false
-  @spec changeset(User.t(), map()) :: Ecto.Changeset.t()
-  def changeset(user, attrs) do
-    user
-    |> cast(attrs, [:name, :email, :password])
-    |> validate_required([:name, :email, :password])
-    |> hash_password()
-  end
-
-  defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
-    change(changeset, password: Bcrypt.hash_pwd_salt(password))
-  end
-
-  defp hash_password(changeset), do: changeset
+  defstruct [:id, :name, :email, :password]
 end

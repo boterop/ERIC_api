@@ -1,4 +1,4 @@
-defmodule EricApi.Adapters.Accounts do
+defmodule EricApi.Adapters.Users do
   @moduledoc """
   The User adapter.
   """
@@ -6,9 +6,10 @@ defmodule EricApi.Adapters.Accounts do
   @behaviour EricApi.Ports.UserRepo
 
   import Ecto.Query, warn: false
+  alias EricApi.Domain.User
   alias EricApi.Repo
 
-  alias EricApi.Domain.User
+  alias EricApi.Adapters.EctoUser
 
   @doc """
   Returns the list of users.
@@ -21,7 +22,9 @@ defmodule EricApi.Adapters.Accounts do
   """
   @impl true
   def list_users do
-    Repo.all(User)
+    EctoUser
+    |> Repo.all()
+    |> cast_list()
   end
 
   @doc """
@@ -39,7 +42,11 @@ defmodule EricApi.Adapters.Accounts do
 
   """
   @impl true
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    EctoUser
+    |> Repo.get!(id)
+    |> cast()
+  end
 
   @doc """
   Creates a user.
@@ -55,9 +62,10 @@ defmodule EricApi.Adapters.Accounts do
   """
   @impl true
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
+    %EctoUser{}
+    |> EctoUser.changeset(attrs)
     |> Repo.insert()
+    |> cast()
   end
 
   @doc """
@@ -75,8 +83,10 @@ defmodule EricApi.Adapters.Accounts do
   @impl true
   def update_user(%User{} = user, attrs) do
     user
-    |> User.changeset(attrs)
+    |> to_schema()
+    |> EctoUser.changeset(attrs)
     |> Repo.update()
+    |> cast()
   end
 
   @doc """
@@ -93,7 +103,10 @@ defmodule EricApi.Adapters.Accounts do
   """
   @impl true
   def delete_user(%User{} = user) do
-    Repo.delete(user)
+    user
+    |> to_schema()
+    |> Repo.delete()
+    |> cast()
   end
 
   @doc """
@@ -107,6 +120,34 @@ defmodule EricApi.Adapters.Accounts do
   """
   @impl true
   def change_user(%User{} = user, attrs \\ %{}) do
-    User.changeset(user, attrs)
+    user
+    |> to_schema()
+    |> EctoUser.changeset(attrs)
+  end
+
+  defp cast(%EctoUser{} = user) do
+    %User{
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.password
+    }
+  end
+
+  defp cast({:ok, %EctoUser{} = user}), do: {:ok, cast(user)}
+
+  defp cast(attrs), do: attrs
+
+  defp cast_list([]), do: []
+  defp cast_list([%EctoUser{} = user | rest]), do: [cast(user) | cast_list(rest)]
+  defp cast_list(attrs), do: attrs
+
+  defp to_schema(%User{} = user) do
+    %EctoUser{
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.password
+    }
   end
 end

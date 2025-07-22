@@ -2,6 +2,7 @@ defmodule EricApiWeb.ChangesetJSON do
   @doc """
   Renders changeset errors.
   """
+  @spec error(any()) :: map()
   def error(%{changeset: changeset}) do
     # When encoded, the changeset returns its errors
     # as a JSON object. So we just pass it forward.
@@ -19,7 +20,7 @@ defmodule EricApiWeb.ChangesetJSON do
     # end
 
     Enum.reduce(opts, msg, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
+      String.replace(acc, "%{#{key}}", fn _error -> to_string(value) end)
     end)
   end
 end

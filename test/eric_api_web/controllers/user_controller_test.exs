@@ -3,7 +3,7 @@ defmodule EricApiWeb.UserControllerTest do
 
   import EricApi.AccountsFixtures
 
-  alias EricApi.Accounts.User
+  alias EricApi.Domain.User
 
   @create_attrs %{
     name: "some name",
@@ -33,14 +33,14 @@ defmodule EricApiWeb.UserControllerTest do
       conn = post(conn, ~p"/api/users", user: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, ~p"/api/users/#{id}")
+      user = get(conn, ~p"/api/users/#{id}")
 
       assert %{
                "id" => ^id,
                "email" => "some email",
                "name" => "some name",
                "password" => "some password"
-             } = json_response(conn, 200)["data"]
+             } = json_response(user, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -56,14 +56,14 @@ defmodule EricApiWeb.UserControllerTest do
       conn = put(conn, ~p"/api/users/#{user}", user: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, ~p"/api/users/#{id}")
+      user = get(conn, ~p"/api/users/#{id}")
 
       assert %{
                "id" => ^id,
                "email" => "some updated email",
                "name" => "some updated name",
                "password" => "some updated password"
-             } = json_response(conn, 200)["data"]
+             } = json_response(user, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
@@ -85,7 +85,7 @@ defmodule EricApiWeb.UserControllerTest do
     end
   end
 
-  defp create_user(_) do
+  defp create_user(_attrs) do
     user = user_fixture()
     %{user: user}
   end

@@ -7,6 +7,7 @@ defmodule EricApiWeb.FallbackController do
   use EricApiWeb, :controller
 
   # This clause handles errors returned by Ecto's insert/update/delete.
+  @impl true
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)

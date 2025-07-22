@@ -4,9 +4,13 @@ defmodule EricApi.AccountsFixtures do
   entities via the `EricApi.Accounts` context.
   """
 
+  alias EricApi.Domain.User
+  alias EricApi.Services.Accounts
+
   @doc """
   Generate a user.
   """
+  @spec user_fixture(map) :: User.t()
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
@@ -15,7 +19,7 @@ defmodule EricApi.AccountsFixtures do
         name: "some name",
         password: "some password"
       })
-      |> EricApi.Accounts.create_user()
+      |> Accounts.create_user()
 
     user
   end

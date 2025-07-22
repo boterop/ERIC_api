@@ -1,10 +1,10 @@
 defmodule EricApi.AccountsTest do
   use EricApi.DataCase
 
-  alias EricApi.Accounts
+  alias EricApi.Services.Accounts
 
   describe "users" do
-    alias EricApi.Accounts.User
+    alias EricApi.Domain.User
 
     import EricApi.AccountsFixtures
 
