@@ -25,8 +25,8 @@ defmodule EricApi.AccountsTest do
 
       assert {:ok, %User{} = user} = Accounts.create_user(valid_attrs)
       assert user.name == "some name"
-      assert user.password == "some password"
       assert user.email == "some email"
+      assert Bcrypt.verify_pass("some password", user.password)
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -44,8 +44,8 @@ defmodule EricApi.AccountsTest do
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.name == "some updated name"
-      assert user.password == "some updated password"
       assert user.email == "some updated email"
+      assert Bcrypt.verify_pass("some updated password", user.password)
     end
 
     test "update_user/2 with invalid data returns error changeset" do

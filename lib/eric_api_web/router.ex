@@ -7,6 +7,8 @@ defmodule EricApiWeb.Router do
 
   scope "/api", EricApiWeb do
     pipe_through :api
+
+    resources "/users", UserController
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

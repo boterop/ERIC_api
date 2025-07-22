@@ -12,11 +12,11 @@ defmodule EricApi.Services.Accounts do
   @impl true
   def get_user!(id), do: @adapter.get_user!(id)
   @impl true
-  def create_user(attrs), do: @adapter.create_user(attrs)
+  def create_user(attrs \\ %{}), do: @adapter.create_user(attrs)
   @impl true
   def update_user(user, attrs), do: @adapter.update_user(user, attrs)
   @impl true
   def delete_user(user), do: @adapter.delete_user(user)
   @impl true
-  def change_user(user, attrs), do: @adapter.change_user(user, attrs)
+  def change_user(user, attrs \\ %{}), do: @adapter.change_user(user, attrs)
 end

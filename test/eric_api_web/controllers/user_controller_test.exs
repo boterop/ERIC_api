@@ -34,13 +34,15 @@ defmodule EricApiWeb.UserControllerTest do
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       user = get(conn, ~p"/api/users/#{id}")
+      user_data = json_response(user, 200)["data"]
 
       assert %{
                "id" => ^id,
                "email" => "some email",
-               "name" => "some name",
-               "password" => "some password"
-             } = json_response(user, 200)["data"]
+               "name" => "some name"
+             } = user_data
+
+      assert Bcrypt.verify_pass("some password", user_data["password"])
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -57,13 +59,15 @@ defmodule EricApiWeb.UserControllerTest do
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       user = get(conn, ~p"/api/users/#{id}")
+      user_data = json_response(user, 200)["data"]
 
       assert %{
                "id" => ^id,
                "email" => "some updated email",
-               "name" => "some updated name",
-               "password" => "some updated password"
-             } = json_response(user, 200)["data"]
+               "name" => "some updated name"
+             } = user_data
+
+      assert Bcrypt.verify_pass("some updated password", user_data["password"])
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
