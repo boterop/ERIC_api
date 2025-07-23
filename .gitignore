@@ -29,4 +29,4 @@ eric_api-*.tar
 !.env*.example
 
 priv/plts/
-
+priv/static/
