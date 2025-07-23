@@ -2,13 +2,16 @@ name: CD
 
 on:
   pull_request:
-    types: [closed, review_requested, ready_for_review, synchronize, opened]
+    branches:
+      - main
+    types: closed
 
 permissions: # added using https://github.com/step-security/secure-repo
   contents: read
 
 jobs:
   publish-docker-image:
+    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - name: Harden the runner (Audit all outbound calls)
