@@ -1,12 +1,12 @@
-defmodule ElixirTemplateWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :elixir_template
+defmodule EricApiWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :eric_api
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_elixir_template_key",
+    key: "_eric_api_key",
     signing_salt: "rvvFF7Nr",
     same_site: "Lax"
   ]
@@ -21,15 +21,15 @@ defmodule ElixirTemplateWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :elixir_template,
+    from: :eric_api,
     gzip: false,
-    only: ElixirTemplateWeb.static_paths()
+    only: EricApiWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :elixir_template
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :eric_api
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -47,5 +47,5 @@ defmodule ElixirTemplateWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug ElixirTemplateWeb.Router
+  plug EricApiWeb.Router
 end

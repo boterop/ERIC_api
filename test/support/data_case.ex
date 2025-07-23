@@ -1,4 +1,4 @@
-defmodule ElixirTemplate.DataCase do
+defmodule EricApi.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,7 +10,7 @@ defmodule ElixirTemplate.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use ElixirTemplate.DataCase, async: true`, although
+  by setting `use EricApi.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
   use ExUnit.CaseTemplate
@@ -19,17 +19,16 @@ defmodule ElixirTemplate.DataCase do
 
   using do
     quote do
-      alias ElixirTemplate.Repo
+      alias EricApi.Repo
 
       import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-      import ElixirTemplate.DataCase
+      import Ecto.{Changeset, Query}
+      import EricApi.DataCase
     end
   end
 
   setup tags do
-    ElixirTemplate.DataCase.setup_sandbox(tags)
+    EricApi.DataCase.setup_sandbox(tags)
     :ok
   end
 
@@ -38,7 +37,7 @@ defmodule ElixirTemplate.DataCase do
   """
   @spec setup_sandbox(any()) :: any()
   def setup_sandbox(tags) do
-    pid = Sandbox.start_owner!(ElixirTemplate.Repo, shared: not tags[:async])
+    pid = Sandbox.start_owner!(EricApi.Repo, shared: not tags[:async])
     on_exit(fn -> Sandbox.stop_owner(pid) end)
   end
 

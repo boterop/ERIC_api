@@ -7,19 +7,23 @@
 # General application configuration
 import Config
 
-config :elixir_template,
-  ecto_repos: [ElixirTemplate.Repo],
+config :eric_api, EricApi.Adapters.Guardian,
+  issuer: "eric_api",
+  secret_key: System.get_env("GUARDIAN_KEY", "guardian_key")
+
+config :eric_api,
+  ecto_repos: [EricApi.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
-config :elixir_template, ElixirTemplateWeb.Endpoint,
+config :eric_api, EricApiWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [json: ElixirTemplateWeb.ErrorJSON],
+    formats: [json: EricApiWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: ElixirTemplate.PubSub,
+  pubsub_server: EricApi.PubSub,
   live_view: [signing_salt: "PLeSTni9"]
 
 # Configures the mailer
@@ -29,7 +33,7 @@ config :elixir_template, ElixirTemplateWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :elixir_template, ElixirTemplate.Mailer, adapter: Swoosh.Adapters.Local
+config :eric_api, EricApi.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configures Elixir's Logger
 config :logger, :console,

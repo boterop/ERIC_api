@@ -1,4 +1,4 @@
-# ElixirTemplate
+# EricApi
 
 To start your Phoenix server:
 
