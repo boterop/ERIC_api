@@ -1,7 +1,7 @@
 ARG ELIXIR_VERSION=1.18.4
 ARG OTP_VERSION=27
 
-FROM elixir:${ELIXIR_VERSION} AS builder
+FROM elixir:${ELIXIR_VERSION}-otp-${OTP_VERSION} AS builder
 WORKDIR /app
 
 ARG MIX_ENV=dev
@@ -23,7 +23,7 @@ EXPOSE 4000
 RUN if [ "$MIX_ENV" = "prod" ]; then mix do phx.gen.release, release; fi
 CMD ["mix", "do", "deps.get,", "start"]
 
-FROM elixir:${ELIXIR_VERSION} AS runner
+FROM elixir:${ELIXIR_VERSION}-otp-${OTP_VERSION} AS runner
 WORKDIR /app
 RUN chown nobody /app
 
