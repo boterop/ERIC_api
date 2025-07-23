@@ -5,7 +5,7 @@ defmodule EricApiWeb.Auth.Pipeline do
 
   use Guardian.Plug.Pipeline,
     otp_app: :eric_api,
-    module: EricApi.Services.Guardian,
+    module: EricApi.Adapters.Guardian,
     error_handler: EricApiWeb.Auth.GuardianErrorHandler
 
   plug Guardian.Plug.VerifyHeader, header_name: "authentication"
