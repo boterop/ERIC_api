@@ -9,16 +9,16 @@ defmodule EricApiWeb.Router do
     if Mix.env() !== :test, do: plug(EricApiWeb.Auth.Pipeline)
   end
 
-  scope "/api/login", EricApiWeb do
-    pipe_through [:api]
+  scope "/api", EricApiWeb do
+    pipe_through :api
 
-    post "/", UserController, :login
-  end
+    post "/login", UserController, :login
+    post "/register", UserController, :create
 
-  scope "/api/users", EricApiWeb do
-    pipe_through [:api, :auth]
-
-    resources "/", UserController
+    scope "/users" do
+      pipe_through :auth
+      resources "/", UserController
+    end
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
