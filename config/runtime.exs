@@ -21,12 +21,12 @@ if System.get_env("PHX_SERVER") do
 end
 
 if config_env() == :prod do
-  database_url =
-    System.get_env("DATABASE_URL") ||
-      raise """
-      environment variable DATABASE_URL is missing.
-      For example: ecto://USER:PASS@HOST/DATABASE
-      """
+  user = System.get_env("DB_USER")
+  password = System.get_env("DB_PASSWORD")
+  host = System.get_env("DB_HOST")
+  db = System.get_env("DB_NAME")
+
+  database_url = "ecto://#{user}:#{password}@#{host}/#{db}"
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
