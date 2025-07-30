@@ -51,8 +51,6 @@ defmodule EricApi.Adapters.Dimensions do
   @doc """
   Gets a single answer.
 
-  Raises `Ecto.NoResultsError` if the answer does not exist.
-
   ## Examples
 
       iex> get_by(question: 1)
@@ -64,7 +62,7 @@ defmodule EricApi.Adapters.Dimensions do
   """
   @impl true
   def get_by(attrs) do
-    EctoUser
+    EctoAnswer
     |> Repo.get_by(attrs)
     |> cast()
   end

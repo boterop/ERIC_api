@@ -8,7 +8,8 @@ defmodule EricApiWeb.Auth.Pipeline do
     module: EricApi.Adapters.Guardian,
     error_handler: EricApiWeb.Auth.GuardianErrorHandler
 
-  plug Guardian.Plug.VerifyHeader, header_name: "authentication"
-  plug Guardian.Plug.EnsureAuthenticated, claims: %{"typ" => "access"}
+  plug Guardian.Plug.VerifyHeader
+  plug Guardian.Plug.VerifySession
+  plug Guardian.Plug.EnsureAuthenticated
   plug Guardian.Plug.LoadResource, allow_blank: true
 end

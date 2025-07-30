@@ -4,7 +4,7 @@ defmodule EricApi.Adapters.Guardian do
   """
 
   use Guardian, otp_app: :eric_api
-  alias EricApi.Adapters.Users
+  alias EricApi.Services.Accounts
 
   @spec subject_for_token(map(), map()) :: {:ok, String.t()} | {:error, atom()}
   def subject_for_token(%{id: id}, _claims) do
@@ -16,7 +16,7 @@ defmodule EricApi.Adapters.Guardian do
 
   @spec resource_from_claims(map()) :: {:ok, String.t()} | {:error, atom()}
   def resource_from_claims(%{"sub" => id}) do
-    case Users.get_user!(id) do
+    case Accounts.get_user!(id) do
       %{} = user -> create_token(user)
       _err -> {:error, :no_user_found}
     end
@@ -26,7 +26,7 @@ defmodule EricApi.Adapters.Guardian do
 
   @spec login(String.t(), String.t()) :: {:ok, String.t()} | {:error, :invalid_credentials}
   def login(email, password) do
-    with %{password: hash} = user <- Users.get_by(email: email),
+    with %{password: hash} = user <- Accounts.get_by(email: email),
          true <- Bcrypt.verify_pass(password, hash) do
       create_token(user)
     else
