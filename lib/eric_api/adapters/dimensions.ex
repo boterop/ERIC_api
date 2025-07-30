@@ -102,6 +102,7 @@ defmodule EricApi.Adapters.Dimensions do
   @impl true
   def update_answer(%Answer{} = answer, attrs) do
     answer
+    |> to_schema()
     |> EctoAnswer.changeset(attrs)
     |> Repo.update()
     |> cast()
@@ -122,6 +123,7 @@ defmodule EricApi.Adapters.Dimensions do
   @impl true
   def delete_answer(%Answer{} = answer) do
     answer
+    |> to_schema()
     |> Repo.delete()
     |> cast()
   end
