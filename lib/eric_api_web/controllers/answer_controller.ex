@@ -14,7 +14,9 @@ defmodule EricApiWeb.AnswerController do
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, %{"answer" => answer_params}) do
-    with {:ok, %Answer{} = answer} <- Dimensions.create_answer(answer_params) do
+    with %{"sub" => user_id} <- Guardian.Plug.current_claims(conn),
+         %{} = params <- Map.put(answer_params, "user_id", user_id),
+         {:ok, %Answer{} = answer} <- Dimensions.create_answer(params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/answers/#{answer}")
@@ -43,6 +45,14 @@ defmodule EricApiWeb.AnswerController do
 
     with {:ok, %Answer{}} <- Dimensions.delete_answer(answer) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  @spec question(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def question(conn, %{"question" => question}) do
+    with %{"sub" => user_id} <- Guardian.Plug.current_claims(conn),
+         %Answer{} = answer <- Dimensions.get_by(question: question, user_id: user_id) do
+      render(conn, :show, answer: answer)
     end
   end
 end

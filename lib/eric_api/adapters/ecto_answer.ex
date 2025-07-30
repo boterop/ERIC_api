@@ -17,7 +17,7 @@ defmodule EricApi.Adapters.EctoAnswer do
   @spec changeset(%__MODULE__{}, map()) :: Ecto.Changeset.t()
   def changeset(answer, attrs) do
     answer
-    |> cast(attrs, [:question, :value, :dimension])
-    |> validate_required([:question, :value, :dimension])
+    |> cast(attrs, [:question, :value, :dimension, :user_id])
+    |> validate_required([:question, :value, :dimension, :user_id])
   end
 end

@@ -18,6 +18,7 @@ defmodule EricApiWeb.Router do
     scope "/answers" do
       pipe_through :auth
       resources "/", AnswerController
+      get "/question/:question", AnswerController, :question
     end
 
     scope "/users" do
