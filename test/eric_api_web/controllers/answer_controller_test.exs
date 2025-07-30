@@ -81,7 +81,7 @@ defmodule EricApiWeb.AnswerControllerTest do
     end
   end
 
-  defp create_answer(_) do
+  defp create_answer(_attrs) do
     answer = answer_fixture()
     %{answer: answer}
   end

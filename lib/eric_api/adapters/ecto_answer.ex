@@ -1,4 +1,8 @@
 defmodule EricApi.Adapters.EctoAnswer do
+  @moduledoc """
+  Answer ecto schema.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
