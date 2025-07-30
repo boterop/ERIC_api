@@ -1,10 +1,10 @@
 defmodule EricApi.DimensionsTest do
   use EricApi.DataCase
 
-  alias EricApi.Dimensions
+  alias EricApi.Services.Dimensions
 
   describe "answers" do
-    alias EricApi.Dimensions.Answer
+    alias EricApi.Domain.Answer
 
     import EricApi.DimensionsFixtures
 
