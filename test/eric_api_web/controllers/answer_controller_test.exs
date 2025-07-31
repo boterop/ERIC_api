@@ -1,22 +1,33 @@
 defmodule EricApiWeb.AnswerControllerTest do
   use EricApiWeb.ConnCase
 
-  import EricApi.DimensionsFixtures
+  import EricApi.{AccountsFixtures, DimensionsFixtures}
 
   alias EricApi.Domain.Answer
+  alias EricApi.Services.Guardian
 
   @create_attrs %{
+    question: 1,
     value: 42,
     dimension: :procedural
   }
   @update_attrs %{
+    question: 1,
     value: 43,
     dimension: :emotional
   }
-  @invalid_attrs %{value: nil, dimension: nil}
+  @invalid_attrs %{question: nil, value: nil, dimension: nil}
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    user = user_fixture()
+    {:ok, token} = Guardian.resource_from_claims(%{"sub" => user.id})
+
+    auth_conn =
+      conn
+      |> put_req_header("authorization", "Bearer #{token}")
+      |> put_req_header("accept", "application/json")
+
+    {:ok, conn: auth_conn}
   end
 
   describe "index" do
@@ -29,12 +40,14 @@ defmodule EricApiWeb.AnswerControllerTest do
   describe "create answer" do
     test "renders answer when data is valid", %{conn: conn} do
       conn = post(conn, ~p"/api/answers", answer: @create_attrs)
+
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       answer = get(conn, ~p"/api/answers/#{id}")
 
       assert %{
                "id" => ^id,
+               "question" => 1,
                "dimension" => "procedural",
                "value" => 42
              } = json_response(answer, 200)["data"]

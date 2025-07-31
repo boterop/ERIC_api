@@ -16,9 +16,9 @@ defmodule EricApi.Adapters.Guardian do
 
   @spec resource_from_claims(map()) :: {:ok, String.t()} | {:error, atom()}
   def resource_from_claims(%{"sub" => id}) do
-    case Accounts.get_user!(id) do
+    case Accounts.get_user(id) do
       %{} = user -> create_token(user)
-      _err -> {:error, :no_user_found}
+      nil -> {:error, :no_user_found}
     end
   end
 

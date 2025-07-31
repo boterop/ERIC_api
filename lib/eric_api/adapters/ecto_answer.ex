@@ -23,5 +23,6 @@ defmodule EricApi.Adapters.EctoAnswer do
     answer
     |> cast(attrs, [:question, :value, :dimension, :user_id])
     |> validate_required([:question, :value, :dimension, :user_id])
+    |> foreign_key_constraint(:user_id)
   end
 end

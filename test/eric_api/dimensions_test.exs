@@ -6,8 +6,7 @@ defmodule EricApi.DimensionsTest do
   describe "answers" do
     alias EricApi.Domain.Answer
 
-    import EricApi.AccountsFixtures
-    import EricApi.DimensionsFixtures
+    import EricApi.{AccountsFixtures, DimensionsFixtures}
 
     @invalid_attrs %{value: nil, dimension: nil}
 
