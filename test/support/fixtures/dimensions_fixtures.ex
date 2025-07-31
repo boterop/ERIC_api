@@ -4,6 +4,7 @@ defmodule EricApi.DimensionsFixtures do
   entities via the `EricApi.Dimensions` context.
   """
 
+  import EricApi.AccountsFixtures
   alias EricApi.Domain.Answer
   alias EricApi.Services.Dimensions
 
@@ -12,12 +13,15 @@ defmodule EricApi.DimensionsFixtures do
   """
   @spec answer_fixture(map()) :: Answer.t()
   def answer_fixture(attrs \\ %{}) do
+    user = user_fixture()
+
     {:ok, answer} =
       attrs
       |> Enum.into(%{
         question: 1,
         dimension: :procedural,
-        value: 42
+        value: 42,
+        user_id: user.id
       })
       |> Dimensions.create_answer()
 

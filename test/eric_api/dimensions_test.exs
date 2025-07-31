@@ -6,6 +6,7 @@ defmodule EricApi.DimensionsTest do
   describe "answers" do
     alias EricApi.Domain.Answer
 
+    import EricApi.AccountsFixtures
     import EricApi.DimensionsFixtures
 
     @invalid_attrs %{value: nil, dimension: nil}
@@ -21,11 +22,14 @@ defmodule EricApi.DimensionsTest do
     end
 
     test "create_answer/1 with valid data creates a answer" do
-      valid_attrs = %{value: 42, dimension: :procedural}
+      valid_user = user_fixture()
+      valid_attrs = %{question: 1, value: 42, dimension: :procedural, user_id: valid_user.id}
 
       assert {:ok, %Answer{} = answer} = Dimensions.create_answer(valid_attrs)
+      assert answer.question == 1
       assert answer.value == 42
       assert answer.dimension == :procedural
+      assert answer.user_id == valid_user.id
     end
 
     test "create_answer/1 with invalid data returns error changeset" do
