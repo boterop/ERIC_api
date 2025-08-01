@@ -51,6 +51,25 @@ defmodule EricApi.Adapters.Users do
   @doc """
   Gets a single user.
 
+  ## Examples
+
+      iex> get_user(123)
+      %User{}
+
+      iex> get_user(456)
+      nil
+
+  """
+  @impl true
+  def get_user(id) do
+    EctoUser
+    |> Repo.get(id)
+    |> cast()
+  end
+
+  @doc """
+  Gets a single user.
+
   Raises `Ecto.NoResultsError` if the User does not exist.
 
   ## Examples

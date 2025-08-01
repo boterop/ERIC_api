@@ -6,7 +6,7 @@ defmodule EricApiWeb.Router do
   end
 
   pipeline :auth do
-    if Mix.env() !== :test, do: plug(EricApiWeb.Auth.Pipeline)
+    plug(EricApiWeb.Auth.Pipeline)
   end
 
   scope "/api", EricApiWeb do
@@ -14,6 +14,12 @@ defmodule EricApiWeb.Router do
 
     post "/login", UserController, :login
     post "/register", UserController, :create
+
+    scope "/answers" do
+      pipe_through :auth
+      resources "/", AnswerController
+      get "/question/:question", AnswerController, :question
+    end
 
     scope "/users" do
       pipe_through :auth
