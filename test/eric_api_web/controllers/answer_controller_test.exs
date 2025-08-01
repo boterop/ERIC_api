@@ -19,7 +19,7 @@ defmodule EricApiWeb.AnswerControllerTest do
   @invalid_attrs %{question: nil, value: nil, dimension: nil}
 
   setup %{conn: conn} do
-    user = user_fixture()
+    user = user_fixture(%{email: "auth@mail.com", name: "Auth"})
     {:ok, token} = Guardian.resource_from_claims(%{"sub" => user.id})
 
     auth_conn =
