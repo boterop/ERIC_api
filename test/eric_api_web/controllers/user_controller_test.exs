@@ -4,6 +4,7 @@ defmodule EricApiWeb.UserControllerTest do
   import EricApi.AccountsFixtures
 
   alias EricApi.Domain.User
+  alias EricApi.Services.Guardian
 
   @create_attrs %{
     name: "some name",
@@ -18,13 +19,21 @@ defmodule EricApiWeb.UserControllerTest do
   @invalid_attrs %{name: nil, password: nil, email: nil}
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    user = user_fixture(%{email: "authored_email"})
+    {:ok, token} = Guardian.resource_from_claims(%{"sub" => user.id})
+
+    auth_conn =
+      conn
+      |> put_req_header("authorization", "Bearer #{token}")
+      |> put_req_header("accept", "application/json")
+
+    {:ok, conn: auth_conn}
   end
 
   describe "index" do
     test "lists all users", %{conn: conn} do
       conn = get(conn, ~p"/api/users")
-      assert json_response(conn, 200)["data"] == []
+      assert length(json_response(conn, 200)["data"]) == 1
     end
   end
 

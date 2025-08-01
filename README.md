@@ -8,6 +8,12 @@ To start your Phoenix server:
 
 - Run `python3 setup.py` to rename the project
 
+## Generate migration
+
+```sh
+mix phx.gen.json Accounts User users name:string email:string password:string
+```
+
 ## With docker
 
 ```sh

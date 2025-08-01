@@ -12,6 +12,8 @@ defmodule EricApi.Services.Accounts do
   @impl true
   def get_user!(id), do: @adapter.get_user!(id)
   @impl true
+  def get_user(id), do: @adapter.get_user(id)
+  @impl true
   def get_by(attrs), do: @adapter.get_by(attrs)
   @impl true
   def create_user(attrs \\ %{}), do: @adapter.create_user(attrs)

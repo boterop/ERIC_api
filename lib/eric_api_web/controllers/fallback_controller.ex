@@ -28,4 +28,6 @@ defmodule EricApiWeb.FallbackController do
     |> put_status(:unauthorized)
     |> json(%{error: "invalid_credentials"})
   end
+
+  def call(conn, nil), do: call(conn, {:error, :not_found})
 end
