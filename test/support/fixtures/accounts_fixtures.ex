@@ -15,7 +15,7 @@ defmodule EricApi.AccountsFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        email: "some email",
+        email: Ecto.UUID.generate(),
         name: "some name",
         password: "some password"
       })
