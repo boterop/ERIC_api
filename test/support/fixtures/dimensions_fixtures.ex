@@ -13,15 +13,13 @@ defmodule EricApi.DimensionsFixtures do
   """
   @spec answer_fixture(map()) :: Answer.t()
   def answer_fixture(attrs \\ %{}) do
-    user = user_fixture()
-
     {:ok, answer} =
       attrs
       |> Enum.into(%{
         question: 1,
         dimension: :procedural,
         value: 42,
-        user_id: user.id
+        user_id: user_fixture().id
       })
       |> Dimensions.create_answer()
 

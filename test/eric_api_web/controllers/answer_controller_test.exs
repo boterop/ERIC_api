@@ -27,7 +27,7 @@ defmodule EricApiWeb.AnswerControllerTest do
       |> put_req_header("authorization", "Bearer #{token}")
       |> put_req_header("accept", "application/json")
 
-    {:ok, conn: auth_conn}
+    {:ok, conn: auth_conn, user: user}
   end
 
   describe "index" do
@@ -94,8 +94,36 @@ defmodule EricApiWeb.AnswerControllerTest do
     end
   end
 
-  defp create_answer(_attrs) do
-    answer = answer_fixture()
+  describe "by question" do
+    setup [:create_answer]
+
+    test "renders chosen answer", %{conn: conn, answer: %{id: id, question: question}} do
+      conn = get(conn, ~p"/api/answers/question/#{question}")
+      %{"id" => ^id} = json_response(conn, 200)["data"]
+    end
+
+    test "renders 404 when id is nonexistent", %{conn: conn} do
+      conn = get(conn, ~p"/api/answers/question/9999")
+      %{"detail" => "Not Found"} = json_response(conn, 404)["errors"]
+    end
+  end
+
+  describe "by dimension" do
+    setup [:create_answer]
+
+    test "renders chosen answer", %{conn: conn, answer: %{id: id, dimension: dimension}} do
+      conn = get(conn, ~p"/api/answers/dimension/#{dimension}")
+      %{"id" => ^id} = json_response(conn, 200)["data"]
+    end
+
+    test "renders 404 when id is nonexistent", %{conn: conn} do
+      conn = get(conn, ~p"/api/answers/dimension/critical")
+      %{"detail" => "Not Found"} = json_response(conn, 404)["errors"]
+    end
+  end
+
+  defp create_answer(%{user: user}) do
+    answer = answer_fixture(user_id: user.id)
     %{answer: answer}
   end
 end

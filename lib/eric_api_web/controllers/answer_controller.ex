@@ -55,4 +55,12 @@ defmodule EricApiWeb.AnswerController do
       render(conn, :show, answer: answer)
     end
   end
+
+  @spec dimension(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def dimension(conn, %{"dimension" => dimension}) do
+    with %{"sub" => user_id} <- Guardian.Plug.current_claims(conn),
+         %Answer{} = answer <- Dimensions.get_by(dimension: dimension, user_id: user_id) do
+      render(conn, :show, answer: answer)
+    end
+  end
 end

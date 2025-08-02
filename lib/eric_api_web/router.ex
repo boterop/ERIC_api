@@ -19,6 +19,7 @@ defmodule EricApiWeb.Router do
       pipe_through :auth
       resources "/", AnswerController
       get "/question/:question", AnswerController, :question
+      get "/dimension/:dimension", AnswerController, :dimension
     end
 
     scope "/users" do
