@@ -59,8 +59,15 @@ defmodule EricApiWeb.AnswerController do
   @spec dimension(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def dimension(conn, %{"dimension" => dimension}) do
     with %{"sub" => user_id} <- Guardian.Plug.current_claims(conn),
-         %Answer{} = answer <- Dimensions.get_by(dimension: dimension, user_id: user_id) do
-      render(conn, :show, answer: answer)
+         {:ok, valid_dimension} <- cast_dimension(dimension),
+         answers <- Dimensions.get_all_by(dimension: valid_dimension, user_id: user_id) do
+      render(conn, :index, answers: answers)
     end
   end
+
+  defp cast_dimension("procedural"), do: {:ok, :procedural}
+  defp cast_dimension("emotional"), do: {:ok, :emotional}
+  defp cast_dimension("cognitive"), do: {:ok, :cognitive}
+  defp cast_dimension("critical"), do: {:ok, :critical}
+  defp cast_dimension(_dimension), do: {:error, :not_found}
 end

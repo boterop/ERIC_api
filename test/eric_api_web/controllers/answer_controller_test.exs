@@ -113,11 +113,33 @@ defmodule EricApiWeb.AnswerControllerTest do
 
     test "renders chosen answer", %{conn: conn, answer: %{id: id, dimension: dimension}} do
       conn = get(conn, ~p"/api/answers/dimension/#{dimension}")
-      %{"id" => ^id} = json_response(conn, 200)["data"]
+      [%{"id" => ^id}] = json_response(conn, 200)["data"]
     end
 
-    test "renders 404 when id is nonexistent", %{conn: conn} do
+    test "renders all answers", %{
+      conn: conn,
+      answer: %{id: id, question: question, dimension: dimension},
+      user: user
+    } do
+      %{id: id2} =
+        answer_fixture(
+          question: question + 1,
+          dimension: dimension,
+          user_id: user.id
+        )
+
+      conn = get(conn, ~p"/api/answers/dimension/#{dimension}")
+
+      [%{"id" => ^id}, %{"id" => ^id2}] = json_response(conn, 200)["data"]
+    end
+
+    test "renders empty list when dimension is nonexistent", %{conn: conn} do
       conn = get(conn, ~p"/api/answers/dimension/critical")
+      [] = json_response(conn, 200)["data"]
+    end
+
+    test "get an error with invalid dimension", %{conn: conn} do
+      conn = get(conn, ~p"/api/answers/dimension/invalid")
       %{"detail" => "Not Found"} = json_response(conn, 404)["errors"]
     end
   end

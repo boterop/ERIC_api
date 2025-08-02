@@ -14,6 +14,8 @@ defmodule EricApi.Services.Dimensions do
   @impl true
   def get_by(attrs), do: @adapter.get_by(attrs)
   @impl true
+  def get_all_by(attrs), do: @adapter.get_all_by(attrs)
+  @impl true
   def create_answer(attrs \\ %{}), do: @adapter.create_answer(attrs)
   @impl true
   def update_answer(answer, attrs), do: @adapter.update_answer(answer, attrs)
