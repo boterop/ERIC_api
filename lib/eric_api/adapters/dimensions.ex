@@ -68,6 +68,26 @@ defmodule EricApi.Adapters.Dimensions do
   end
 
   @doc """
+  Gets all answers.
+
+  ## Examples
+
+      iex> get_all_by(question: 1)
+      [%Answer{}, ...]
+
+      iex> get_all_by(question: 999999999)
+      []
+
+  """
+  @impl true
+  def get_all_by(attrs) do
+    EctoAnswer
+    |> where(^attrs)
+    |> Repo.all()
+    |> cast_list()
+  end
+
+  @doc """
   Creates a answer.
 
   ## Examples
