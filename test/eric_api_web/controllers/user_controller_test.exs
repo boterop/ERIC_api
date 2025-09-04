@@ -9,14 +9,30 @@ defmodule EricApiWeb.UserControllerTest do
   @create_attrs %{
     name: "some name",
     password: "some password",
-    email: "some email"
+    email: "some email",
+    type: :student,
+    country: "some country",
+    institution: "some institution",
+    age: 42
   }
   @update_attrs %{
     name: "some updated name",
     password: "some updated password",
-    email: "some updated email"
+    email: "some updated email",
+    type: :professor,
+    country: "some updated country",
+    institution: "some updated institution",
+    age: 43
   }
-  @invalid_attrs %{name: nil, password: nil, email: nil}
+  @invalid_attrs %{
+    name: nil,
+    password: nil,
+    email: nil,
+    type: nil,
+    country: nil,
+    institution: nil,
+    age: nil
+  }
 
   setup %{conn: conn} do
     user = user_fixture(%{email: "authored_email"})
@@ -48,7 +64,11 @@ defmodule EricApiWeb.UserControllerTest do
       assert %{
                "id" => ^id,
                "email" => "some email",
-               "name" => "some name"
+               "name" => "some name",
+               "type" => "student",
+               "country" => "some country",
+               "institution" => "some institution",
+               "age" => 42
              } = user_data
 
       assert user_data["password"] == nil
@@ -73,7 +93,11 @@ defmodule EricApiWeb.UserControllerTest do
       assert %{
                "id" => ^id,
                "email" => "some updated email",
-               "name" => "some updated name"
+               "name" => "some updated name",
+               "type" => "professor",
+               "country" => "some updated country",
+               "institution" => "some updated institution",
+               "age" => 43
              } = user_data
 
       assert user_data["password"] == nil
