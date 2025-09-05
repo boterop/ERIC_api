@@ -73,6 +73,6 @@ jobs:
           ssh-keyscan -H ${{ env.SSH_HOST }} > ~/.ssh/known_hosts
       - name: Deploy production
         run: |
-          ssh -i ~/aws.pem -o StrictHostKeyChecking=no ${{ env.SSH_USER }}@${{ env.SSH_HOST }} "cd ${{ env.WORK_DIR }}/${{env.REPO_NAME}} && docker-compose pull && docker-compose down && docker-compose up -d && docker image prune -f && exit"
+          ssh -i ~/aws.pem -o StrictHostKeyChecking=no ${{ env.SSH_USER }}@${{ env.SSH_HOST }} "cd ${{ env.WORK_DIR }}/${{env.REPO_NAME}} && docker compose pull && docker compose down && docker compose up -d && docker image prune -f && exit"
       - name: Clean up
         run: rm -rf ~/aws.pem
