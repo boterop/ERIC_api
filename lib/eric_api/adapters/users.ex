@@ -170,7 +170,11 @@ defmodule EricApi.Adapters.Users do
       id: user.id,
       name: user.name,
       email: user.email,
-      password: user.password
+      password: user.password,
+      type: user.type,
+      country: user.country,
+      institution: user.institution,
+      age: user.age
     }
   end
 
@@ -187,7 +191,11 @@ defmodule EricApi.Adapters.Users do
       id: user.id,
       name: user.name,
       email: user.email,
-      password: user.password
+      password: user.password,
+      type: user.type,
+      country: user.country,
+      institution: user.institution,
+      age: user.age
     }
   end
 end

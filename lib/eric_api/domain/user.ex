@@ -5,8 +5,12 @@ defmodule EricApi.Domain.User do
           id: String.t() | nil,
           name: String.t(),
           email: String.t(),
-          password: String.t()
+          password: String.t(),
+          type: :student | :professor,
+          country: String.t(),
+          institution: String.t(),
+          age: integer()
         }
 
-  defstruct [:id, :name, :email, :password]
+  defstruct [:id, :name, :email, :password, :type, :country, :institution, :age]
 end

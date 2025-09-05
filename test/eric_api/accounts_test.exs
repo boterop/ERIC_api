@@ -8,7 +8,15 @@ defmodule EricApi.AccountsTest do
 
     import EricApi.AccountsFixtures
 
-    @invalid_attrs %{name: nil, password: nil, email: nil}
+    @invalid_attrs %{
+      name: nil,
+      password: nil,
+      email: nil,
+      type: nil,
+      country: nil,
+      institution: nil,
+      age: nil
+    }
 
     test "list_users/0 returns all users" do
       user = user_fixture()
@@ -21,11 +29,23 @@ defmodule EricApi.AccountsTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{name: "some name", password: "some password", email: "some email"}
+      valid_attrs = %{
+        name: "some name",
+        password: "some password",
+        email: "some email",
+        type: :student,
+        country: "some country",
+        institution: "some institution",
+        age: 42
+      }
 
       assert {:ok, %User{} = user} = Accounts.create_user(valid_attrs)
       assert user.name == "some name"
       assert user.email == "some email"
+      assert user.type == :student
+      assert user.country == "some country"
+      assert user.institution == "some institution"
+      assert user.age == 42
       assert Bcrypt.verify_pass("some password", user.password)
     end
 
@@ -39,12 +59,20 @@ defmodule EricApi.AccountsTest do
       update_attrs = %{
         name: "some updated name",
         password: "some updated password",
-        email: "some updated email"
+        email: "some updated email",
+        type: :professor,
+        country: "some updated country",
+        institution: "some updated institution",
+        age: 43
       }
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.name == "some updated name"
       assert user.email == "some updated email"
+      assert user.type == :professor
+      assert user.country == "some updated country"
+      assert user.institution == "some updated institution"
+      assert user.age == 43
       assert Bcrypt.verify_pass("some updated password", user.password)
     end
 

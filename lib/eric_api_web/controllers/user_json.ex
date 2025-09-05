@@ -27,7 +27,11 @@ defmodule EricApiWeb.UserJSON do
     %{
       id: user.id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      type: user.type,
+      country: user.country,
+      institution: user.institution,
+      age: user.age
     }
   end
 end
