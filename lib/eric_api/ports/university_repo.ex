@@ -2,7 +2,8 @@ defmodule EricApi.Ports.UniversityRepo do
   @moduledoc """
   The University behavior.
   """
+
   alias EricApi.Domain.University
 
-  @callback search(country: String.t())) :: [University.t()]
+  @callback search(country: String.t()) :: {:ok, [University.t()]} | {:error, term()}
 end
