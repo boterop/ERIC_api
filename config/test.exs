@@ -31,3 +31,6 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Configure university adapter mock for testing
+config :eric_api, :university_adapter, EricApi.Mocks.UniversityAdapterMock

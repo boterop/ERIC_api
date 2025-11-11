@@ -28,7 +28,7 @@ defmodule EricApiWeb.Router do
     end
 
     scope "/universities" do
-      pipe_through :api
+      pipe_through :auth
       resources "/", UniversityController
     end
   end
