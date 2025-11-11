@@ -29,5 +29,13 @@ defmodule EricApiWeb.FallbackController do
     |> json(%{error: "invalid_credentials"})
   end
 
+  # This clause handles generic string errors
+  def call(conn, {:error, message}) when is_binary(message) do
+    conn
+    |> put_status(:internal_server_error)
+    |> put_view(json: EricApiWeb.ErrorJSON)
+    |> render(:"500", errors: %{detail: message})
+  end
+
   def call(conn, nil), do: call(conn, {:error, :not_found})
 end

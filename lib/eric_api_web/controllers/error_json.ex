@@ -12,6 +12,11 @@ defmodule EricApiWeb.ErrorJSON do
   #   %{errors: %{detail: "Internal Server Error"}}
   # end
 
+  # Handle custom error messages
+  def render(_template, %{errors: errors}) do
+    %{errors: errors}
+  end
+
   # By default, Phoenix returns the status message from
   # the template name. For example, "404.json" becomes
   # "Not Found".
