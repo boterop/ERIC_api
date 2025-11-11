@@ -26,7 +26,7 @@ defmodule EricApiWeb.UniversityControllerTest do
       assert is_list(universities)
       assert length(universities) == 2
 
-      [first_university | _] = universities
+      [first_university | _rest] = universities
 
       assert %{
                "name" => "Universidad Nacional de Colombia",

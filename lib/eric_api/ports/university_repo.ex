@@ -5,5 +5,5 @@ defmodule EricApi.Ports.UniversityRepo do
 
   alias EricApi.Domain.University
 
-  @callback search(country: String.t()) :: {:ok, [University.t()]} | {:error, term()}
+  @callback search(String.t()) :: {:ok, [University.t()]} | {:error, term()}
 end

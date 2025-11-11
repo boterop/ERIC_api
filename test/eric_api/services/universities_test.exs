@@ -1,8 +1,8 @@
 defmodule EricApi.Services.UniversitiesTest do
   use ExUnit.Case, async: true
 
-  alias EricApi.Services.Universities
   alias EricApi.Domain.University
+  alias EricApi.Services.Universities
 
   describe "search/1" do
     test "returns universities for valid country" do
@@ -10,7 +10,7 @@ defmodule EricApi.Services.UniversitiesTest do
       assert is_list(universities)
       assert length(universities) == 2
 
-      [first_university | _] = universities
+      [first_university | _rest] = universities
       assert %University{} = first_university
       assert first_university.name == "Universidad Nacional de Colombia"
       assert first_university.country == "Colombia"
