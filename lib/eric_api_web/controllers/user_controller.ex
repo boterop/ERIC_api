@@ -6,6 +6,8 @@ defmodule EricApiWeb.UserController do
 
   action_fallback EricApiWeb.FallbackController
 
+  @email_regex ~r/^[A-Za-z0-9._%+-']+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
+
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
     users = Accounts.list_users()
@@ -14,11 +16,20 @@ defmodule EricApiWeb.UserController do
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+    with true <- Regex.match?(@email_regex, user_params["email"]),
+         {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/users/#{user}")
       |> render(:show, user: user)
+    end
+  end
+
+  @spec me(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def me(conn, _params) do
+    with %{"sub" => user_id} <- Guardian.Plug.current_claims(conn),
+         %User{} = user <- Accounts.get_user(user_id) do
+      render(conn, :show, user: user)
     end
   end
 
