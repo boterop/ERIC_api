@@ -25,7 +25,7 @@ defmodule EricApi.Adapters.EctoUser do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :email, :password, :type, :country, :institution, :age])
-    |> validate_required([:name, :email, :password, :type, :country, :institution, :age])
+    |> validate_required([:name, :email, :password, :country, :institution, :age])
     |> unique_constraint(:email)
     |> hash_password()
   end

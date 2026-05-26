@@ -22,6 +22,8 @@ defmodule EricApiWeb.UserController do
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/users/#{user}")
       |> render(:show, user: user)
+    else
+      false -> render(conn, :error, message: "Invalid email format")
     end
   end
 
@@ -29,7 +31,7 @@ defmodule EricApiWeb.UserController do
   def me(conn, _params) do
     with [token] <- get_req_header(conn, "authorization"),
          "Bearer " <> token <- token,
-         %{"sub" => user_id} <- Guardian.current_claims(token),
+         {:ok, %{"sub" => user_id}} <- Guardian.current_claims(token),
          %User{} = user <- Accounts.get_user(user_id) do
       render(conn, :show, user: user)
     end
