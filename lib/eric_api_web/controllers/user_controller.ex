@@ -16,6 +16,8 @@ defmodule EricApiWeb.UserController do
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, %{"user" => user_params}) do
+    user_params = Map.put(user_params, "type", "student")
+
     with true <- Regex.match?(@email_regex, user_params["email"]),
          {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn
