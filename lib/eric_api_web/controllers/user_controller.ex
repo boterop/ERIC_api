@@ -27,7 +27,9 @@ defmodule EricApiWeb.UserController do
 
   @spec me(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def me(conn, _params) do
-    with %{"sub" => user_id} <- Guardian.Plug.current_claims(conn),
+    with [token] <- get_req_header(conn, "authorization"),
+         "Bearer " <> token <- token,
+         %{"sub" => user_id} <- Guardian.current_claims(token),
          %User{} = user <- Accounts.get_user(user_id) do
       render(conn, :show, user: user)
     end

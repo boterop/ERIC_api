@@ -24,6 +24,14 @@ defmodule EricApi.Adapters.Guardian do
 
   def resource_from_claims(_claims), do: {:error, :no_id_provided}
 
+  @spec current_claims(token :: String.t()) :: {:ok, map()} | {:error, atom()}
+  def current_claims(token) do
+    case decode_and_verify(token) do
+      {:ok, claims} -> {:ok, claims}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
   @spec login(String.t(), String.t()) :: {:ok, String.t()} | {:error, :invalid_credentials}
   def login(email, password) do
     with %{password: hash} = user <- Accounts.get_by(email: email),

@@ -38,4 +38,6 @@ defmodule EricApiWeb.FallbackController do
   end
 
   def call(conn, nil), do: call(conn, {:error, :not_found})
+
+  def call(conn, _), do: call(conn, {:error, :internal_server_error})
 end
