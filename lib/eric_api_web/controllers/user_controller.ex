@@ -6,7 +6,7 @@ defmodule EricApiWeb.UserController do
 
   action_fallback EricApiWeb.FallbackController
 
-  @email_regex ~r/^[A-Za-z0-9._%+-']+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
+  @email_regex ~r/^[A-Za-z0-9._%+\'-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
