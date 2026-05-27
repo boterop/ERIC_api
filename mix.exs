@@ -61,7 +61,9 @@ defmodule EricApi.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18.1", only: :test},
-      {:cors_plug, "~> 3.0"}
+      {:cors_plug, "~> 3.0"},
+      {:telemetry_metrics_prometheus_core, "~> 1.2.1"},
+      {:prom_ex, "~> 1.11.0"}
     ]
   end
 
