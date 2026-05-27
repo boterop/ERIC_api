@@ -29,6 +29,12 @@ defmodule EricApiWeb.FallbackController do
     |> json(%{error: "invalid_credentials"})
   end
 
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> json(%{error: "unauthorized"})
+  end
+
   # This clause handles generic string errors
   def call(conn, {:error, message}) when is_binary(message) do
     conn

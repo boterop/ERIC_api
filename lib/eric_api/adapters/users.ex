@@ -28,6 +28,22 @@ defmodule EricApi.Adapters.Users do
   end
 
   @doc """
+  Returns the list of students.
+
+  ## Examples
+
+      iex> list_students()
+      [%User{}, ...]
+  """
+  @impl true
+  def list_students do
+    EctoUser
+    |> where([u], u.type == "student")
+    |> Repo.all()
+    |> cast_list()
+  end
+
+  @doc """
   Gets a single user.
 
   Raises `Ecto.NoResultsError` if the User does not exist.

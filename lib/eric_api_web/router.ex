@@ -26,6 +26,7 @@ defmodule EricApiWeb.Router do
     scope "/users" do
       pipe_through :auth
       get "/me", UserController, :me
+      get "/students", UserController, :index_students
     end
   end
 

@@ -5,6 +5,7 @@ defmodule EricApi.Ports.UserRepo do
   alias EricApi.Domain.User
 
   @callback list_users() :: [User.t()]
+  @callback list_students() :: [User.t()]
   @callback get_user!(id :: integer) :: User.t() | Ecto.NoResultsError
   @callback get_user(id :: integer) :: User.t() | nil
   @callback get_by(map()) :: User.t() | nil
