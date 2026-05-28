@@ -24,9 +24,8 @@ defmodule EricApiWeb.UserController do
          "Bearer " <> token <- token,
          {:ok, %{"sub" => user_id}} <- Guardian.current_claims(token),
          %User{} = user <- Accounts.get_user(user_id),
-         IO.inspect(user),
          :ok <- check_is_professor(user),
-         users <- Accounts.list_users() do
+         users <- Accounts.list_students() do
       render(conn, :index, users: users)
     end
   end
