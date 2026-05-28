@@ -38,7 +38,7 @@ defmodule EricApi.Adapters.Users do
   @impl true
   def list_students do
     EctoUser
-    |> where([u], u.type == "student")
+    |> where([u], u.type == :student)
     |> Repo.all()
     |> cast_list()
   end
