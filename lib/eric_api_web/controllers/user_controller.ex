@@ -9,7 +9,7 @@ defmodule EricApiWeb.UserController do
   @email_regex ~r/^[A-Za-z0-9._%+\'-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
 
   @spec check_is_professor(User.t()) :: :ok | {:error, :unauthorized}
-  defp check_is_professor(%User{type: "professor"}), do: :ok
+  defp check_is_professor(%User{type: :professor}), do: :ok
   defp check_is_professor(_rest), do: {:error, :unauthorized}
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -24,6 +24,7 @@ defmodule EricApiWeb.UserController do
          "Bearer " <> token <- token,
          {:ok, %{"sub" => user_id}} <- Guardian.current_claims(token),
          %User{} = user <- Accounts.get_user(user_id),
+         IO.inspect(user),
          :ok <- check_is_professor(user),
          users <- Accounts.list_users() do
       render(conn, :index, users: users)
