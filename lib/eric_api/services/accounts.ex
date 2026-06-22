@@ -25,4 +25,6 @@ defmodule EricApi.Services.Accounts do
   def delete_user(user), do: @adapter.delete_user(user)
   @impl true
   def change_user(user, attrs \\ %{}), do: @adapter.change_user(user, attrs)
+  @impl true
+  def check_is_professor(user), do: @adapter.check_is_professor(user)
 end

@@ -13,4 +13,5 @@ defmodule EricApi.Ports.UserRepo do
   @callback update_user(User.t(), map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   @callback delete_user(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   @callback change_user(User.t(), map()) :: Ecto.Changeset.t()
+  @callback check_is_professor(User.t()) :: :ok | {:error, :unauthorized}
 end

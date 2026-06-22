@@ -1,8 +1,8 @@
 defmodule EricApiWeb.AnswerController do
   use EricApiWeb, :controller
 
-  alias EricApi.Domain.Answer
-  alias EricApi.Services.Dimensions
+  alias EricApi.Domain.{Answer, User}
+  alias EricApi.Services.{Accounts, Dimensions}
 
   action_fallback EricApiWeb.FallbackController
 
@@ -57,6 +57,16 @@ defmodule EricApiWeb.AnswerController do
   end
 
   @spec dimension(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def dimension(conn, %{"dimension" => dimension, "user_id" => user_id}) do
+    with %{"sub" => professor_id} <- Guardian.Plug.current_claims(conn),
+         {:ok, valid_dimension} <- cast_dimension(dimension),
+         %User{} = professor <- Accounts.get_user(professor_id),
+         :ok <- Accounts.check_is_professor(professor),
+         answers <- Dimensions.get_all_by(dimension: valid_dimension, user_id: user_id) do
+      render(conn, :index, answers: answers)
+    end
+  end
+
   def dimension(conn, %{"dimension" => dimension}) do
     with %{"sub" => user_id} <- Guardian.Plug.current_claims(conn),
          {:ok, valid_dimension} <- cast_dimension(dimension),

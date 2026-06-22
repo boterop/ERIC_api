@@ -181,6 +181,21 @@ defmodule EricApi.Adapters.Users do
     |> EctoUser.changeset(attrs)
   end
 
+  @doc """
+  Checks if the user is a professor.
+
+  ## Examples
+
+      iex> check_is_professor(%User{type: :professor})
+      :ok
+
+      iex> check_is_professor(%User{type: :student})
+      {:error, :unauthorized}
+  """
+  @impl true
+  def check_is_professor(%User{type: :professor}), do: :ok
+  def check_is_professor(_rest), do: {:error, :unauthorized}
+
   defp cast(%EctoUser{} = user) do
     %User{
       id: user.id,
