@@ -28,6 +28,7 @@ defmodule EricApiWeb.Router do
       pipe_through :auth
       get "/me", UserController, :me
       get "/students", UserController, :index_students
+      resources "/", UserController, except: [:new, :edit]
     end
   end
 

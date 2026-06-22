@@ -6,6 +6,8 @@ defmodule EricApi.Adapters.EctoUser do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @email_regex ~r/^[A-Za-z0-9._%+'-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "users" do
@@ -26,6 +28,7 @@ defmodule EricApi.Adapters.EctoUser do
     user
     |> cast(attrs, [:name, :email, :password, :type, :country, :institution, :age])
     |> validate_required([:name, :email, :password, :country, :institution, :age])
+    |> validate_format(:email, @email_regex)
     |> unique_constraint(:email)
     |> hash_password()
   end

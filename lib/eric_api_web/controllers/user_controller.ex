@@ -6,8 +6,6 @@ defmodule EricApiWeb.UserController do
 
   action_fallback EricApiWeb.FallbackController
 
-  @email_regex ~r/^[A-Za-z0-9._%+\'-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
-
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
     users = Accounts.list_users()
@@ -30,14 +28,11 @@ defmodule EricApiWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     user_params = Map.put(user_params, "type", "student")
 
-    with true <- Regex.match?(@email_regex, user_params["email"]),
-         {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/users/#{user}")
       |> render(:show, user: user)
-    else
-      false -> render(conn, :error, message: "Invalid email format")
     end
   end
 
