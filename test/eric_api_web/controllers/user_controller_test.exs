@@ -9,7 +9,7 @@ defmodule EricApiWeb.UserControllerTest do
   @create_attrs %{
     name: "some name",
     password: "some password",
-    email: "some email",
+    email: "some@example.com",
     type: :student,
     country: "some country",
     institution: "some institution",
@@ -18,7 +18,7 @@ defmodule EricApiWeb.UserControllerTest do
   @update_attrs %{
     name: "some updated name",
     password: "some updated password",
-    email: "some updated email",
+    email: "some.updated@example.com",
     type: :professor,
     country: "some updated country",
     institution: "some updated institution",
@@ -35,7 +35,7 @@ defmodule EricApiWeb.UserControllerTest do
   }
 
   setup %{conn: conn} do
-    user = user_fixture(%{email: "authored_email"})
+    user = user_fixture(%{email: "authored@example.com"})
     {:ok, token} = Guardian.resource_from_claims(%{"sub" => user.id})
 
     auth_conn =
@@ -63,7 +63,7 @@ defmodule EricApiWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
-               "email" => "some email",
+               "email" => "some@example.com",
                "name" => "some name",
                "type" => "student",
                "country" => "some country",
@@ -92,7 +92,7 @@ defmodule EricApiWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
-               "email" => "some updated email",
+               "email" => "some.updated@example.com",
                "name" => "some updated name",
                "type" => "professor",
                "country" => "some updated country",

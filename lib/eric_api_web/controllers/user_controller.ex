@@ -12,13 +12,37 @@ defmodule EricApiWeb.UserController do
     render(conn, :index, users: users)
   end
 
+  @spec index_students(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def index_students(conn, _params) do
+    with [token] <- get_req_header(conn, "authorization"),
+         "Bearer " <> token <- token,
+         {:ok, %{"sub" => user_id}} <- Guardian.current_claims(token),
+         %User{} = user <- Accounts.get_user(user_id),
+         :ok <- Accounts.check_is_professor(user),
+         users <- Accounts.list_students() do
+      render(conn, :index, users: users)
+    end
+  end
+
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, %{"user" => user_params}) do
+    user_params = Map.put(user_params, "type", "student")
+
     with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/users/#{user}")
       |> render(:show, user: user)
+    end
+  end
+
+  @spec me(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def me(conn, _params) do
+    with [token] <- get_req_header(conn, "authorization"),
+         "Bearer " <> token <- token,
+         {:ok, %{"sub" => user_id}} <- Guardian.current_claims(token),
+         %User{} = user <- Accounts.get_user(user_id) do
+      render(conn, :show, user: user)
     end
   end
 

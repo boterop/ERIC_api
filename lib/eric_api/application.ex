@@ -8,6 +8,7 @@ defmodule EricApi.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      EricApi.PromEx,
       EricApiWeb.Telemetry,
       EricApi.Repo,
       {DNSCluster, query: Application.get_env(:eric_api, :dns_cluster_query) || :ignore},

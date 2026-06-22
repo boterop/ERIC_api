@@ -23,10 +23,23 @@ defmodule EricApiWeb.FallbackController do
     |> render(:"404")
   end
 
+  def call(conn, {:error, :internal_server_error}) do
+    conn
+    |> put_status(:internal_server_error)
+    |> put_view(html: EricApiWeb.ErrorHTML, json: EricApiWeb.ErrorJSON)
+    |> render(:"500")
+  end
+
   def call(conn, {:error, :invalid_credentials}) do
     conn
     |> put_status(:unauthorized)
     |> json(%{error: "invalid_credentials"})
+  end
+
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> json(%{error: "unauthorized"})
   end
 
   # This clause handles generic string errors
@@ -38,4 +51,6 @@ defmodule EricApiWeb.FallbackController do
   end
 
   def call(conn, nil), do: call(conn, {:error, :not_found})
+
+  def call(conn, _rest), do: call(conn, {:error, :internal_server_error})
 end

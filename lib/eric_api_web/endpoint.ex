@@ -36,6 +36,8 @@ defmodule EricApiWeb.Endpoint do
     param_key: "request_logger",
     cookie_key: "request_logger"
 
+  plug PromEx.Plug, prom_ex_module: EricApi.PromEx
+
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
@@ -47,5 +49,6 @@ defmodule EricApiWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug CORSPlug, origin: "*"
   plug EricApiWeb.Router
 end

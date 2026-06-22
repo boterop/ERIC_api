@@ -10,6 +10,8 @@ defmodule EricApi.Services.Guardian do
   def subject_for_token(user, claims), do: @adapter.subject_for_token(user, claims)
   @spec resource_from_claims(map()) :: {:ok, String.t()} | {:error, atom()}
   def resource_from_claims(claims), do: @adapter.resource_from_claims(claims)
+  @spec current_claims(token :: String.t()) :: {:ok, map()} | {:error, atom()}
+  def current_claims(token), do: @adapter.current_claims(token)
   @spec authenticate(String.t(), String.t()) :: {:ok, String.t()} | {:error, atom()}
   def authenticate(email, password), do: @adapter.login(email, password)
 end

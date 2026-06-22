@@ -32,7 +32,7 @@ defmodule EricApi.AccountsTest do
       valid_attrs = %{
         name: "some name",
         password: "some password",
-        email: "some email",
+        email: "some@example.com",
         type: :student,
         country: "some country",
         institution: "some institution",
@@ -41,7 +41,7 @@ defmodule EricApi.AccountsTest do
 
       assert {:ok, %User{} = user} = Accounts.create_user(valid_attrs)
       assert user.name == "some name"
-      assert user.email == "some email"
+      assert user.email == "some@example.com"
       assert user.type == :student
       assert user.country == "some country"
       assert user.institution == "some institution"
@@ -59,7 +59,7 @@ defmodule EricApi.AccountsTest do
       update_attrs = %{
         name: "some updated name",
         password: "some updated password",
-        email: "some updated email",
+        email: "some.updated@example.com",
         type: :professor,
         country: "some updated country",
         institution: "some updated institution",
@@ -68,7 +68,7 @@ defmodule EricApi.AccountsTest do
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.name == "some updated name"
-      assert user.email == "some updated email"
+      assert user.email == "some.updated@example.com"
       assert user.type == :professor
       assert user.country == "some updated country"
       assert user.institution == "some updated institution"

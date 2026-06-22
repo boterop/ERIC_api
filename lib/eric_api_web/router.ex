@@ -15,6 +15,7 @@ defmodule EricApiWeb.Router do
     post "/login", UserController, :login
     post "/register", UserController, :create
     resources "/universities", UniversityController
+    get "/countries", CountryController, :index
 
     scope "/answers" do
       pipe_through :auth
@@ -25,7 +26,9 @@ defmodule EricApiWeb.Router do
 
     scope "/users" do
       pipe_through :auth
-      resources "/", UserController
+      get "/me", UserController, :me
+      get "/students", UserController, :index_students
+      resources "/", UserController, except: [:new, :edit]
     end
   end
 

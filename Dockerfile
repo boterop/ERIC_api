@@ -21,7 +21,7 @@ RUN mix do phx.digest, compile
 
 EXPOSE 4000
 RUN if [ "$MIX_ENV" = "prod" ]; then mix do phx.gen.release, release; fi
-CMD ["mix", "do", "deps.get,", "start"]
+CMD ["mix", "do", "deps.get,", "ecto.create,", "ecto.migrate,", "phx.server"]
 
 FROM elixir:${ELIXIR_VERSION}-otp-${OTP_VERSION} AS runner
 WORKDIR /app

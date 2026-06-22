@@ -22,6 +22,11 @@ defmodule EricApiWeb.UserJSON do
     %{data: token}
   end
 
+  @spec error(map()) :: map()
+  def error(%{message: message}) do
+    %{error: message}
+  end
+
   @spec data(User.t()) :: map()
   defp data(%User{} = user) do
     %{

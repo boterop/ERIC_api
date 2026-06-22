@@ -28,6 +28,22 @@ defmodule EricApi.Adapters.Users do
   end
 
   @doc """
+  Returns the list of students.
+
+  ## Examples
+
+      iex> list_students()
+      [%User{}, ...]
+  """
+  @impl true
+  def list_students do
+    EctoUser
+    |> where([u], u.type == :student)
+    |> Repo.all()
+    |> cast_list()
+  end
+
+  @doc """
   Gets a single user.
 
   Raises `Ecto.NoResultsError` if the User does not exist.
@@ -164,6 +180,21 @@ defmodule EricApi.Adapters.Users do
     |> to_schema()
     |> EctoUser.changeset(attrs)
   end
+
+  @doc """
+  Checks if the user is a professor.
+
+  ## Examples
+
+      iex> check_is_professor(%User{type: :professor})
+      :ok
+
+      iex> check_is_professor(%User{type: :student})
+      {:error, :unauthorized}
+  """
+  @impl true
+  def check_is_professor(%User{type: :professor}), do: :ok
+  def check_is_professor(_rest), do: {:error, :unauthorized}
 
   defp cast(%EctoUser{} = user) do
     %User{

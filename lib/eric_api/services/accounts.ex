@@ -10,6 +10,8 @@ defmodule EricApi.Services.Accounts do
   @impl true
   def list_users, do: @adapter.list_users()
   @impl true
+  def list_students, do: @adapter.list_students()
+  @impl true
   def get_user!(id), do: @adapter.get_user!(id)
   @impl true
   def get_user(id), do: @adapter.get_user(id)
@@ -23,4 +25,6 @@ defmodule EricApi.Services.Accounts do
   def delete_user(user), do: @adapter.delete_user(user)
   @impl true
   def change_user(user, attrs \\ %{}), do: @adapter.change_user(user, attrs)
+  @impl true
+  def check_is_professor(user), do: @adapter.check_is_professor(user)
 end
