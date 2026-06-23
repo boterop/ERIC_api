@@ -13,11 +13,12 @@ defmodule EricApi.Workers.GenerateScoreExcel do
   alias EricApi.Services.Score, as: ScoreService
   alias EricApi.Workers.SendEmail
 
-  @csv_path "priv/static/downloads"
+  @csv_path System.tmp_dir!()
+            |> Path.join("reports")
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"professor_id" => id, "email" => email}}) do
-    file_path = "#{@csv_path}/#{id}.csv"
+    file_path = @csv_path |> Path.join("#{id}.csv")
     File.rm_rf!(file_path)
 
     csv_content =
@@ -26,9 +27,9 @@ defmodule EricApi.Workers.GenerateScoreExcel do
       |> Enum.map(fn student ->
         student
         |> list_answers()
-        |> get_score(student)
-        |> create_csv_info(student)
+        |> format_answers(student)
       end)
+      |> Enum.filter(& &1)
       |> csv_encode()
       |> create_csv_headers()
 
@@ -41,6 +42,17 @@ defmodule EricApi.Workers.GenerateScoreExcel do
 
     :ok
   end
+
+  @spec format_answers(answers :: [Answer.t()], student :: User.t()) :: [String.t()] | nil
+  defp format_answers([], _student), do: nil
+
+  defp format_answers(answers, student) when is_list(answers) do
+    answers
+    |> get_score(student)
+    |> create_csv_info(student)
+  end
+
+  defp format_answers(_any, _student), do: nil
 
   @spec create_csv_headers(csv :: String.t()) :: String.t()
   defp create_csv_headers(csv) do
