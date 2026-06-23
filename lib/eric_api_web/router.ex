@@ -16,6 +16,7 @@ defmodule EricApiWeb.Router do
     post "/register", UserController, :create
     resources "/universities", UniversityController
     get "/countries", CountryController, :index
+    get "/gen-excel", ScoreController, :gen_excel
 
     scope "/answers" do
       pipe_through :auth
