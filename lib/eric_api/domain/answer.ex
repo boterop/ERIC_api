@@ -3,11 +3,13 @@ defmodule EricApi.Domain.Answer do
   The Answer domain.
   """
 
+  alias EricApi.Domain.Dimension
+
   @type t :: %__MODULE__{
           id: String.t() | nil,
           question: integer,
           value: integer,
-          dimension: :procedural | :emotional | :cognitive | :critical,
+          dimension: Dimension.t(),
           user_id: String.t()
         }
 
