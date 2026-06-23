@@ -13,11 +13,12 @@ defmodule EricApi.Workers.GenerateScoreExcel do
   alias EricApi.Services.Score, as: ScoreService
   alias EricApi.Workers.SendEmail
 
-  @csv_path "priv/static/downloads"
+  @csv_path System.tmp_dir!()
+            |> Path.join("reports")
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"professor_id" => id, "email" => email}}) do
-    file_path = "#{@csv_path}/#{id}.csv"
+    file_path = @csv_path |> Path.join("#{id}.csv")
     File.rm_rf!(file_path)
 
     csv_content =
@@ -26,9 +27,9 @@ defmodule EricApi.Workers.GenerateScoreExcel do
       |> Enum.map(fn student ->
         student
         |> list_answers()
-        |> get_score(student)
-        |> create_csv_info(student)
+        |> format_answers(student)
       end)
+      |> Enum.filter(& &1)
       |> csv_encode()
       |> create_csv_headers()
 
@@ -42,6 +43,15 @@ defmodule EricApi.Workers.GenerateScoreExcel do
     :ok
   end
 
+  @spec format_answers(answers :: [Answer.t()], student :: User.t()) :: [String.t()] | nil
+  defp format_answers([], _student), do: nil
+
+  defp format_answers(answers, student) do
+    answers
+    |> get_score(student)
+    |> create_csv_info(student)
+  end
+
   @spec create_csv_headers(csv :: String.t()) :: String.t()
   defp create_csv_headers(csv) do
     "Name,Email,Type,Country,Institution,Age,Cognitive Score,Cognitive Level,Critical Score,Critical Level,Emotional Score,Emotional Level,Procedural Score,Procedural Level\n" <>
@@ -52,6 +62,15 @@ defmodule EricApi.Workers.GenerateScoreExcel do
   defp csv_encode(csv_info) do
     Enum.map_join(csv_info, "\n", fn row -> Enum.map_join(row, ",", &to_string/1) end)
   end
+
+  @spec format_for_csv(text :: String.t()) :: String.t()
+  defp format_for_csv(text) when is_binary(text) do
+    text
+    |> String.trim()
+    |> String.replace(",", ".")
+  end
+
+  defp format_for_csv(other), do: other
 
   @spec create_csv_info(score_list :: [Score.t()], student :: User.t()) :: [String.t()]
   defp create_csv_info(score_list, student) do
@@ -76,6 +95,7 @@ defmodule EricApi.Workers.GenerateScoreExcel do
       procedural.value,
       procedural.level
     ]
+    |> Enum.map(&format_for_csv/1)
   end
 
   @spec list_answers(student :: User.t()) :: [Answer.t()]
