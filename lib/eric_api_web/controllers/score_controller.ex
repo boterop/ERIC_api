@@ -13,6 +13,9 @@ defmodule EricApiWeb.ScoreController do
          %{} = oban_job <- GenerateScoreExcel.new(%{professor_id: user_id, email: email}),
          {:ok, %Oban.Job{}} <- Oban.insert(oban_job) do
       send_resp(conn, :ok, "ok")
+    else
+      error ->
+        send_resp(conn, :bad_request, inspect(error))
     end
   end
 end
