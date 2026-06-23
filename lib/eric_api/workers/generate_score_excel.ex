@@ -46,13 +46,11 @@ defmodule EricApi.Workers.GenerateScoreExcel do
   @spec format_answers(answers :: [Answer.t()], student :: User.t()) :: [String.t()] | nil
   defp format_answers([], _student), do: nil
 
-  defp format_answers(answers, student) when is_list(answers) do
+  defp format_answers(answers, student) do
     answers
     |> get_score(student)
     |> create_csv_info(student)
   end
-
-  defp format_answers(_any, _student), do: nil
 
   @spec create_csv_headers(csv :: String.t()) :: String.t()
   defp create_csv_headers(csv) do
