@@ -45,7 +45,8 @@ config :phoenix, :json_library, Jason
 
 config :eric_api, Oban,
   repo: EricApi.Repo,
-  queues: [mailers: 20]
+  queues: [mailers: 20],
+  plugins: [Oban.Plugins.Pruner]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
