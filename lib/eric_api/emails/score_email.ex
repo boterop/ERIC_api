@@ -5,15 +5,14 @@ defmodule EricApi.Emails.ScoreEmail do
 
   import Swoosh.Email
 
-  @from System.get_env("GMAIL_USERNAME")
-  @subject "Scores #{DateTime.utc_now() |> DateTime.to_string()}"
-
   @spec csv_ready(String.t(), String.t()) :: Swoosh.Email.t()
   def csv_ready(email, file_path) do
+    now = DateTime.utc_now() |> DateTime.to_string()
+
     new()
     |> to(email)
-    |> from(@from)
-    |> subject(@subject)
+    |> from(System.get_env("GMAIL_USERNAME"))
+    |> subject("Scores #{now}")
     |> text_body("""
       Hi,
 
