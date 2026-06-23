@@ -36,6 +36,12 @@ defmodule EricApi.Adapters.Score do
   @impl true
   def calculate(answers, dimension \\ nil)
 
+  def calculate([], nil) do
+    [:procedural, :emotional, :cognitive, :critical]
+    |> Enum.map(&%Score{value: 0, level: :low, dimension: &1})
+    |> List.flatten()
+  end
+
   def calculate([], _dimension), do: []
 
   def calculate(answers, nil) do
