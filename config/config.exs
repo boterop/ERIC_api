@@ -33,7 +33,18 @@ config :eric_api, EricApiWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :eric_api, EricApi.Mailer, adapter: Swoosh.Adapters.Local
+# config :eric_api, EricApi.Mailer, adapter: Swoosh.Adapters.Local
+config :eric_api, EricApi.Mailer,
+  adapter: Swoosh.Adapters.SMTP,
+  relay: "smtp.gmail.com",
+  port: 587,
+  username: System.get_env("GMAIL_USERNAME"),
+  password: System.get_env("GMAIL_PASSWORD"),
+  retries: 2,
+  ssl: false,
+  tls: :always,
+  tls_options: [verify: :verify_none],
+  auth: :always
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -45,7 +56,7 @@ config :phoenix, :json_library, Jason
 
 config :eric_api, Oban,
   repo: EricApi.Repo,
-  queues: [mailers: 20],
+  queues: [workers: 20, mailers: 5],
   plugins: [Oban.Plugins.Pruner]
 
 # Import environment specific config. This must remain at the bottom

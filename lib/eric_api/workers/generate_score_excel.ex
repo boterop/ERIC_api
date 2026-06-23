@@ -4,18 +4,19 @@ defmodule EricApi.Workers.GenerateScoreExcel do
   """
 
   use Oban.Worker,
-    queue: :mailers,
+    queue: :workers,
     max_attempts: 3,
     unique: [fields: [:args], period: {5, :minutes}, keys: [:professor_id]]
 
   alias EricApi.Domain.{Answer, Score, User}
   alias EricApi.Services.{Accounts, Dimensions}
   alias EricApi.Services.Score, as: ScoreService
+  alias EricApi.Workers.SendEmail
 
   @csv_path "priv/static/downloads"
 
   @impl Oban.Worker
-  def perform(%Oban.Job{args: %{"professor_id" => id}}) do
+  def perform(%Oban.Job{args: %{"professor_id" => id, "email" => email}}) do
     file_path = "#{@csv_path}/#{id}.csv"
     File.rm_rf!(file_path)
 
@@ -33,6 +34,10 @@ defmodule EricApi.Workers.GenerateScoreExcel do
 
     File.mkdir_p!(@csv_path)
     File.write(file_path, csv_content)
+
+    %{email: email, file_path: file_path}
+    |> SendEmail.new()
+    |> Oban.insert()
 
     :ok
   end

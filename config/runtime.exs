@@ -107,6 +107,19 @@ if config_env() == :prod do
   #       adapter: Swoosh.Adapters.Mailgun,
   #       api_key: System.get_env("MAILGUN_API_KEY"),
   #       domain: System.get_env("MAILGUN_DOMAIN")
+
+  config :eric_api, EricApi.Mailer,
+    adapter: Swoosh.Adapters.SMTP,
+    relay: "smtp.gmail.com",
+    port: 587,
+    username: System.get_env("GMAIL_USERNAME"),
+    password: System.get_env("GMAIL_PASSWORD"),
+    retries: 2,
+    ssl: false,
+    tls: :always,
+    tls_options: [verify: :verify_none],
+    auth: :always
+
   #
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
