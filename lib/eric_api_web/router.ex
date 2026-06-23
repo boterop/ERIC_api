@@ -1,12 +1,24 @@
 defmodule EricApiWeb.Router do
   use EricApiWeb, :router
 
+  import Oban.Web.Router
+  import Phoenix.LiveView.Router
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   pipeline :auth do
     plug(EricApiWeb.Auth.Pipeline)
+  end
+
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {EricApiWeb.Layouts, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   scope "/api", EricApiWeb do
@@ -51,6 +63,12 @@ defmodule EricApiWeb.Router do
 
       live_dashboard "/dashboard", metrics: EricApiWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+
+    scope "/" do
+      pipe_through :browser
+
+      oban_dashboard("/oban")
     end
   end
 end

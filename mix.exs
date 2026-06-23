@@ -66,6 +66,7 @@ defmodule EricApi.MixProject do
       {:telemetry_metrics_prometheus_core, "~> 1.2.1"},
       {:prom_ex, "~> 1.11.0"},
       {:oban, "~> 2.23.0"},
+      {:oban_web, "~> 2.12.5"},
       {:igniter, "~> 0.6", only: [:dev, :test]}
     ]
   end
