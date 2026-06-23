@@ -7,7 +7,7 @@ defmodule EricApi.Domain.Score do
 
   @type t :: %__MODULE__{
           id: String.t() | nil,
-          value: Float.t(),
+          value: float(),
           level: :high | :medium | :low,
           dimension: Dimension.t()
         }

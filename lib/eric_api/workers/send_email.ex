@@ -17,7 +17,7 @@ defmodule EricApi.Workers.SendEmail do
       |> EricApi.Mailer.deliver()
 
     case result do
-      {:ok, _} ->
+      {:ok, _id} ->
         File.rm(file_path)
         :ok
 
