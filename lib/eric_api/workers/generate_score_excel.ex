@@ -65,6 +65,15 @@ defmodule EricApi.Workers.GenerateScoreExcel do
     Enum.map_join(csv_info, "\n", fn row -> Enum.map_join(row, ",", &to_string/1) end)
   end
 
+  @spec format_for_csv(text :: String.t()) :: String.t()
+  defp format_for_csv(text) when is_binary(text) do
+    text
+    |> String.trim()
+    |> String.replace(",", ".")
+  end
+
+  defp format_for_csv(other), do: other
+
   @spec create_csv_info(score_list :: [Score.t()], student :: User.t()) :: [String.t()]
   defp create_csv_info(score_list, student) do
     cognitive = score_list |> Enum.find(fn %Score{dimension: dim} -> dim == :cognitive end)
@@ -88,6 +97,7 @@ defmodule EricApi.Workers.GenerateScoreExcel do
       procedural.value,
       procedural.level
     ]
+    |> Enum.map(&format_for_csv/1)
   end
 
   @spec list_answers(student :: User.t()) :: [Answer.t()]
