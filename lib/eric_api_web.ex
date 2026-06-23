@@ -18,7 +18,7 @@ defmodule EricApiWeb do
   """
 
   @spec static_paths :: list(binary())
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt downloads)
 
   @spec router :: any()
   def router do

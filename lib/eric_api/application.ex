@@ -12,6 +12,7 @@ defmodule EricApi.Application do
       EricApiWeb.Telemetry,
       EricApi.Repo,
       {DNSCluster, query: Application.get_env(:eric_api, :dns_cluster_query) || :ignore},
+      {Oban, Application.fetch_env!(:eric_api, Oban)},
       {Phoenix.PubSub, name: EricApi.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: EricApi.Finch},

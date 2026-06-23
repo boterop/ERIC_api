@@ -49,6 +49,7 @@ defmodule EricApi.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:swoosh, "~> 1.5"},
+      {:gen_smtp, "~> 1.3.0"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
@@ -63,7 +64,9 @@ defmodule EricApi.MixProject do
       {:excoveralls, "~> 0.18.1", only: :test},
       {:cors_plug, "~> 3.0"},
       {:telemetry_metrics_prometheus_core, "~> 1.2.1"},
-      {:prom_ex, "~> 1.11.0"}
+      {:prom_ex, "~> 1.11.0"},
+      {:oban, "~> 2.23.0"},
+      {:igniter, "~> 0.6", only: [:dev, :test]}
     ]
   end
 
