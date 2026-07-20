@@ -3,7 +3,11 @@ defmodule EricApiWeb.CountryController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    path = "priv/json/countries.json"
+    file = "json/countries.json"
+    path =
+      :eric_api
+      |> :code.priv_dir()
+      |> Path.join(file)
 
     with {:ok, content} <- File.read(path),
          {:ok, json} <- Jason.decode(content) do
